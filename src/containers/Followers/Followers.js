@@ -12,7 +12,7 @@ const Container = styled.div`
 	align-items: center;
 	border: 1px solid #ccc;
 	box-shadow: 2px 2px #eee;
-	height: 180px;
+	height: 220px;
 `;
 
 const FollowersContainer = styled.div`
@@ -28,9 +28,10 @@ const Followers = (props) => {
 	const filterValue = useSelector((state) => state.followers.filterValue);
 
 	const dispatch = useDispatch();
-	const getFollowers = useCallback((userId) => dispatch(onGetFollowers(userId)), [
-		dispatch,
-	]);
+	const getFollowers = useCallback(
+		(userId) => dispatch(onGetFollowers(userId)),
+		[dispatch]
+	);
 
 	// Can handle this with redux but since its not going to be used anywhere,
 	// I'll handle currentPage in the component itself

@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const FollowerContainer = styled.div`
+	display: flex;
+	flex-flow: column;
+`;
 const ImageContainer = styled.div`
 	width: 150px;
 	min-height: 150px;
@@ -20,11 +24,12 @@ const Follower = (props) => {
 	const { name, imageUrl } = props;
 
 	return (
-		<div>
+		<FollowerContainer>
 			<ImageContainer>
 				<StyledImage src={imageUrl} alt={name} />
 			</ImageContainer>
-		</div>
+			{name}
+		</FollowerContainer>
 	);
 };
 
