@@ -1,15 +1,17 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './App.css';
-import Search from './components/Search/Search';
+
 import Followers from './containers/Followers/Followers';
+import UserSearch from './containers/UserSearch/UserSearch';
 
 function App() {
-	const userId = 'fabpot';
+	const userId = useSelector((state) => state.followers.userId);
 
 	return (
 		<div className="App">
 			<h1>Github followers of user: {userId}</h1>
-			<Search />
+			<UserSearch />
 			<Followers userId={userId} />
 		</div>
 	);

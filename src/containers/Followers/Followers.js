@@ -1,9 +1,9 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import Follower from '../../components/Follower/Follower';
-import { useSelector, useDispatch } from 'react-redux';
-import { onGetFollowers } from '../../store/actions/followers';
+import { useSelector } from 'react-redux';
 import Button from '../../components/UI/Button/Button';
+import SearchFollowers from '../SearchFollowers/SearchFollowers';
 
 const Container = styled.div`
 	display: flex;
@@ -21,27 +21,15 @@ const FollowersContainer = styled.div`
 	width: 690px;
 `;
 
-const Followers = (props) => {
-	const { userId } = props;
+const Followers = () => {
 	const followers = useSelector((state) => state.followers.followers);
 	const error = useSelector((state) => state.followers.error);
 	const filterValue = useSelector((state) => state.followers.filterValue);
-
-	const dispatch = useDispatch();
-	const getFollowers = useCallback(
-		(userId) => dispatch(onGetFollowers(userId)),
-		[dispatch]
-	);
 
 	// Can handle this with redux but since its not going to be used anywhere,
 	// I'll handle currentPage in the component itself
 	const [currentPage, setCurrentPage] = useState(1);
 	const followersPerPage = 4;
-
-	useEffect(() => {
-		getFollowers(userId);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userId]);
 
 	const nextButtonHandler = () => {
 		if (currentPage < Math.ceil(followers.length / followersPerPage)) {
@@ -66,19 +54,25 @@ const Followers = (props) => {
 		<Fragment>
 			{error && <div>{error}</div>}
 			{!error && visibleFollowers && (
-				<Container>
-					<Button onClick={previousButtonHandler}>Previous</Button>
-					<FollowersContainer>
-						{visibleFollowers.map((u) => (
-							<Follower
-								key={u.id}
-								name={u.login}
-								imageUrl={u.avatar_url}
-							/>
-						))}
-					</FollowersContainer>
-					<Button onClick={nextButtonHandler}>Next</Button>
-				</Container>
+				<Fragment>
+					{' '}
+					<Container>
+						<Button onClick={previousButtonHandler}>
+							Previous
+						</Button>
+						<FollowersContainer>
+							{visibleFollowers.map((u) => (
+								<Follower
+									key={u.id}
+									name={u.login}
+									imageUrl={u.avatar_url}
+								/>
+							))}
+						</FollowersContainer>
+						<Button onClick={nextButtonHandler}>Next</Button>
+					</Container>
+					<SearchFollowers />
+				</Fragment>
 			)}
 		</Fragment>
 	);

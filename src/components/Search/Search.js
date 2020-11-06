@@ -1,7 +1,5 @@
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import styled from 'styled-components';
-import { onSetFilterValue } from '../../store/actions/followers';
 
 const StyledInput = styled.input`
 	height: 30px;
@@ -12,22 +10,15 @@ const StyledInput = styled.input`
 `;
 const SearchContainer = styled.div``;
 
-const Search = () => {
-	const dispatch = useDispatch();
-	const setFilterValue = useCallback(
-		(val) => dispatch(onSetFilterValue(val)),
-		[dispatch]
-	);
-
-	const onChangeHandler = (e) => {
-		setFilterValue(e.target.value);
-	};
+const Search = (props) => {
+	const { onChange, placeholder, parentRef } = props;
 
 	return (
 		<SearchContainer>
 			<StyledInput
-				placeholder="Filter the followers by user ID"
-				onChange={onChangeHandler}
+				placeholder={placeholder}
+				onChange={onChange}
+				ref={parentRef}
 			/>
 		</SearchContainer>
 	);

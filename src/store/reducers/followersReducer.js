@@ -1,6 +1,12 @@
-import { SET_ERROR, SET_FITER_VALUE, SET_FOLLOWERS } from '../actions/actionTypes';
+import {
+	SET_ERROR,
+	SET_FITER_VALUE,
+	SET_FOLLOWERS,
+	SET_USER_ID,
+} from '../actions/actionTypes';
 
 const initialState = {
+	userId: '',
 	followers: null,
 	error: null,
 	filterValue: '',
@@ -21,6 +27,9 @@ const followersReducer = (state = initialState, action) => {
 
 		case SET_FITER_VALUE:
 			return { ...state, filterValue: action.value };
+
+		case SET_USER_ID:
+			return { ...state, userId: action.value };
 
 		default:
 			return state;
