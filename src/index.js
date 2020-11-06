@@ -4,12 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import usersReducer from './store/reducers/usersReducer';
+import followersReducer from './store/reducers/followersReducer';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-	users: usersReducer,
+	followers: followersReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

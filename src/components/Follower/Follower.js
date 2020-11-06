@@ -16,7 +16,7 @@ const StyledImage = styled.img`
 	height: auto;
 `;
 
-const User = (props) => {
+const Follower = (props) => {
 	const { name, imageUrl } = props;
 
 	return (
@@ -28,4 +28,4 @@ const User = (props) => {
 	);
 };
 
-export default User;
+export default Follower;

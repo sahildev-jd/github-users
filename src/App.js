@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Search from './components/Search/Search';
-import Users from './containers/Users/Users';
+import Followers from './containers/Followers/Followers';
 
 function App() {
 	const userId = 'fabpot';
@@ -10,7 +10,7 @@ function App() {
 		<div className="App">
 			<h1>Github followers of user: {userId}</h1>
 			<Search />
-			<Users userId={userId} />
+			<Followers userId={userId} />
 		</div>
 	);
 }

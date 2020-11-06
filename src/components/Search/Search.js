@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { onSetFilterValue } from '../../store/actions/users';
+import { onSetFilterValue } from '../../store/actions/followers';
 
 const StyledInput = styled.input`
 	height: 30px;
