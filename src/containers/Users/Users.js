@@ -1,11 +1,8 @@
-import axios from '../../axios-github';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import User from '../../components/User/User';
-// Dummy data
-// import userData from '../../assets/users.json';
 import { useSelector, useDispatch } from 'react-redux';
-import { onSetError, onSetUsers } from '../../store/actions/users';
+import { onGetUsers } from '../../store/actions/users';
 import Button from '../../components/UI/Button/Button';
 
 const Container = styled.div`
@@ -29,13 +26,9 @@ const Users = (props) => {
 	const users = useSelector((state) => state.users.users);
 	const error = useSelector((state) => state.users.error);
 	const filterValue = useSelector((state) => state.users.filterValue);
-	const dispatch = useDispatch();
 
-	const setUsers = useCallback(
-		(usersData) => dispatch(onSetUsers(usersData)),
-		[dispatch]
-	);
-	const setError = useCallback((apiError) => dispatch(onSetError(apiError)), [
+	const dispatch = useDispatch();
+	const getUsers = useCallback((userId) => dispatch(onGetUsers(userId)), [
 		dispatch,
 	]);
 
@@ -45,13 +38,7 @@ const Users = (props) => {
 	const usersPerPage = 4;
 
 	useEffect(() => {
-		// Working with dummy data
-		// const response = { data: userData };
-		// setUsers(response.data);
-		axios
-			.get(`/users/${userId}/followers`)
-			.then((response) => setUsers(response.data))
-			.catch((error) => setError(error));
+		getUsers(userId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userId]);
 
