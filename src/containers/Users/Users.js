@@ -1,12 +1,14 @@
 import axios from '../../axios-github';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import User from '../../components/User/User';
 import userData from '../../assets/users.json';
+import { useSelector, useDispatch } from 'react-redux';
+import { onSetError, onSetUsers } from '../../store/actions/users';
 
 const Container = styled.div`
 	display: flex;
-	max-width: 80%;
+	margin: 0 80px;
 	justify-content: center;
 	align-items: center;
 	border: 1px solid #ccc;
@@ -20,25 +22,32 @@ const UsersContainer = styled.div`
 
 const Users = (props) => {
 	const { userId } = props;
-	const [users, setUsers] = useState(null);
-	const [error, setError] = useState(null);
+	const users = useSelector((state) => state.users.users);
+	const error = useSelector((state) => state.users.error);
+	const dispatch = useDispatch();
+
+	const setUsers = useCallback(
+		(usersData) => dispatch(onSetUsers(usersData)),
+		[dispatch]
+	);
+	const setError = useCallback((apiError) => dispatch(onSetError(apiError)), [
+		dispatch,
+	]);
+	// const [users, setUsers] = useState(null);
+	// const [error, setError] = useState(null);
+
+	// Can handle this with redux but since its not going to be used anywhere,
+	// I'll handle currentPage in the component itself
 	const [currentPage, setCurrentPage] = useState(1);
 	const usersPerPage = 4;
 
 	useEffect(() => {
-		// axios
-		// 	.get(`/users/${userId}/followers`)
-		// 	.then((response) => {
-		const response = { data: userData };
-		// console.log(response.data[1]);
-		setUsers(response.data);
-		// })
-		// .catch((error) => {
-		// 	setError(
-		// 		'Users could not be loaded. Please try again after some time'
-		// 	);
-		// 	console.log(error);
-		// });
+		// const response = { data: userData };
+		axios
+			.get(`/users/${userId}/followers`)
+			.then((response) => setUsers(response.data))
+			.catch((error) => setError(error));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userId]);
 
 	const nextButtonHandler = () => {
@@ -60,18 +69,17 @@ const Users = (props) => {
 	return (
 		<Fragment>
 			{error && <div>{error}</div>}
-			{!error && (
+			{!error && visibleUsers && (
 				<Container>
 					<button onClick={previousButtonHandler}>Previous</button>
 					<UsersContainer>
-						{visibleUsers &&
-							visibleUsers.map((u) => (
-								<User
-									key={u.id}
-									name={u.login}
-									imageUrl={u.avatar_url}
-								/>
-							))}
+						{visibleUsers.map((u) => (
+							<User
+								key={u.id}
+								name={u.login}
+								imageUrl={u.avatar_url}
+							/>
+						))}
 					</UsersContainer>
 					<button onClick={nextButtonHandler}>Next</button>
 				</Container>

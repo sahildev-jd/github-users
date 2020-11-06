@@ -6,8 +6,9 @@ const ImageContainer = styled.div`
 	min-height: 150px;
 	max-height: auto;
 	float: left;
-	margin: 3px;
-	padding: 3px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	box-shadow: 2px 2px #eee;
 `;
 
 const StyledImage = styled.img`
