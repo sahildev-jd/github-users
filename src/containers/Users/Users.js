@@ -2,9 +2,11 @@ import axios from '../../axios-github';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import User from '../../components/User/User';
-import userData from '../../assets/users.json';
+// Dummy data
+// import userData from '../../assets/users.json';
 import { useSelector, useDispatch } from 'react-redux';
 import { onSetError, onSetUsers } from '../../store/actions/users';
+import Button from '../../components/UI/Button/Button';
 
 const Container = styled.div`
 	display: flex;
@@ -13,17 +15,20 @@ const Container = styled.div`
 	align-items: center;
 	border: 1px solid #ccc;
 	box-shadow: 2px 2px #eee;
+	height: 180px;
 `;
 
 const UsersContainer = styled.div`
 	display: flex;
 	flex-flow: row;
+	width: 690px;
 `;
 
 const Users = (props) => {
 	const { userId } = props;
 	const users = useSelector((state) => state.users.users);
 	const error = useSelector((state) => state.users.error);
+	const filterValue = useSelector((state) => state.users.filterValue);
 	const dispatch = useDispatch();
 
 	const setUsers = useCallback(
@@ -33,8 +38,6 @@ const Users = (props) => {
 	const setError = useCallback((apiError) => dispatch(onSetError(apiError)), [
 		dispatch,
 	]);
-	// const [users, setUsers] = useState(null);
-	// const [error, setError] = useState(null);
 
 	// Can handle this with redux but since its not going to be used anywhere,
 	// I'll handle currentPage in the component itself
@@ -42,7 +45,9 @@ const Users = (props) => {
 	const usersPerPage = 4;
 
 	useEffect(() => {
+		// Working with dummy data
 		// const response = { data: userData };
+		// setUsers(response.data);
 		axios
 			.get(`/users/${userId}/followers`)
 			.then((response) => setUsers(response.data))
@@ -61,17 +66,20 @@ const Users = (props) => {
 			setCurrentPage((currPage) => currPage - 1);
 		}
 	};
-
 	const firstIndex = (currentPage - 1) * usersPerPage;
 	const lastIndex = currentPage * usersPerPage;
-	const visibleUsers = users && users.slice(firstIndex, lastIndex);
+	const visibleUsers =
+		users &&
+		users
+			.filter((u) => u.login.includes(filterValue))
+			.slice(firstIndex, lastIndex);
 
 	return (
 		<Fragment>
 			{error && <div>{error}</div>}
 			{!error && visibleUsers && (
 				<Container>
-					<button onClick={previousButtonHandler}>Previous</button>
+					<Button onClick={previousButtonHandler}>Previous</Button>
 					<UsersContainer>
 						{visibleUsers.map((u) => (
 							<User
@@ -81,7 +89,7 @@ const Users = (props) => {
 							/>
 						))}
 					</UsersContainer>
-					<button onClick={nextButtonHandler}>Next</button>
+					<Button onClick={nextButtonHandler}>Next</Button>
 				</Container>
 			)}
 		</Fragment>

@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import Search from './components/Search/Search';
 import Users from './containers/Users/Users';
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
 
 	return (
 		<div className="App">
-			<h1>Github users for follower</h1>
+			<h1>Github followers of user: {userId}</h1>
+			<Search />
 			<Users userId={userId} />
 		</div>
 	);
