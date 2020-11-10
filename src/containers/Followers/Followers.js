@@ -12,7 +12,7 @@ const Container = styled.div`
 	align-items: center;
 	border: 1px solid #ccc;
 	box-shadow: 2px 2px #eee;
-	height: 220px;
+	min-height: 220px;
 `;
 
 const FollowersContainer = styled.div`
